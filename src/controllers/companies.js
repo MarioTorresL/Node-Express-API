@@ -33,11 +33,12 @@ router.get('/:id', async (req, res)=>{
 
 router.post('/', async(req, res)=>{
   try{
-    const {name} = req.body
-
+    
     if( Object.entries(req.body).length === 0 ){
       return res.status(400).send('No data given')
     }
+    
+    const {name} = req.body
 
     if(!name){
       return res.status(400).send('name is required')
@@ -48,75 +49,38 @@ router.post('/', async(req, res)=>{
     res.json(company.toJSON())
     
   }catch(e){
-    res.send(e)
+    res.status(400).send(e)
   }
 })
 
-// router.post('/', async(req, res) =>{
-//   try{
-//       const data = _.pick(req.body, ['name']);
+router.put ('/:id', async (req, res) =>{
+  try{
 
-//       if(_.isEmpty(data)){
-//           return res.error(new RisksCreateError('No data given'))
-//       }
+    if( Object.entries(req.body).length === 0 ){
+      return res.status(400).send('No data given')
+    }
 
-//       if(!data.name){
-//           return res.error(new RisksCreateError('Nombre es requerido'))
-//       }
+    const {name} = req.body
 
-//       const risk = await Risks.create(data);
+    if(!name){
+      return res.status(400).send('name is required')
+    }
 
-//       const getRisk = await Risks.findOne({
-//           where: {id: risk.id}
-//       })
-//       res.json(getRisk.toJSON());
-//   }catch(e){
-//       if (e.name === 'SequelizeUniqueConstraintError') {
-//           res.error(new RisksCreateError(e.message))
-//       } else {
-//           res.error(e);
-//       } 
-//   }
-// })
+    const company = await models.Companies.findByPk(req.params.id);
 
-// router.put('/:id', async (req, res) =>{
-//   try{
-//       const data = _.pick(req.body, ['name']);
+    if(!company){
+      return res.status(404).send('Not Found')
+    }
 
-//       const risk = await Risks.findByPk(req.params.id);
+    const updateCompany = await company.update({name:name});
 
-//       const updaterisk = await risk.update({
-//           name: data.name
-//       })
-//       res.json(updaterisk)
-//   }catch(e){
-//       res.status(400).json({
-//           error:{
-//               type: 'Bad Request',
-//               message: 'Error'
-//           }
-//       }) 
-//   }
-// })
+    res.json(updateCompany.toJSON())
+  }catch(e){
+    res.status(400).send(e)
+  }
+})
 
-// router.delete('/:id', async (req, res) =>{
-//   try{
-//       const risk = await Risks.findByPk(req.params.id)
 
-//       if(risk){
-//           await risk.destroy();
-//           return res.status(204).json();
-//       } else {
-//           return res.status(404).error(new RisksCreateError('Riesgo no encontrado'))
-//       }
-//   }catch(e){
-//       res.status(400).json({
-//           error: {
-//               type: 'Bad Request',
-//               message: 'Error'
-//           }
-//       })
-//   }
-// })
+
 
 module.exports = router;
