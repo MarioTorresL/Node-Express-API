@@ -3,7 +3,7 @@ const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) =>{
 
-  class Movie extends Model{
+  class Movies extends Model{
 
     static associations(models){
       //associations here
@@ -11,13 +11,13 @@ module.exports = (sequelize, DataTypes) =>{
     }
   };
 
-  Movie.init({
+  Movies.init({
     actor:DataTypes.STRING,
     date: DataTypes.DATE
   },{
    sequelize,
-   modelName:'Movie', 
+   modelName:'Movies', 
   });
 
-  return Movie;
+  return Movies;
 };
