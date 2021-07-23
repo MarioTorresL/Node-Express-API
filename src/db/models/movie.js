@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) =>{
   };
 
   Movies.init({
+    name:DataTypes.STRING,
     actor:DataTypes.STRING,
     date: DataTypes.DATE
   },{
