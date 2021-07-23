@@ -80,7 +80,24 @@ router.put ('/:id', async (req, res) =>{
   }
 })
 
+router.delete('/:id', async (req, res)=>{
 
+  try{
 
+    const company = await models.Companies.findByPk(req.params.id)
+
+    if(!company){
+      return res.status(404).send('Not Found')
+    }
+
+    await company.destroy();
+
+    return res.status(204).json()
+
+  }
+  catch(e){
+res.status(400).send(e)
+  }
+})
 
 module.exports = router;
