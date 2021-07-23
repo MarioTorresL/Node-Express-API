@@ -5,9 +5,9 @@ const models = require('../db/models/');
 router.get('/', async(req, res)=>{
   try{
 
-    const records = await models.Companies.findAll();
+    const companies = await models.Companies.findAll();
 
-    res.status(200).send(records)
+    res.status(200).send(companies)
 
   }catch(e){
     console.log(e)
@@ -18,10 +18,10 @@ router.get('/', async(req, res)=>{
 router.get('/:id', async (req, res)=>{
   try{
 
-    const record = await models.Companies.findByPk(req.params.id);
+    const company = await models.Companies.findByPk(req.params.id);
 
-    if(record){
-      res.status( 200 ).send( record.toJSON() );
+    if(company){
+      res.status( 200 ).send( company.toJSON() );
     }else{
       res.status(404).send('Not Found')
     }
@@ -96,7 +96,7 @@ router.delete('/:id', async (req, res)=>{
 
   }
   catch(e){
-res.status(400).send(e)
+    res.status(400).send(e)
   }
 })
 

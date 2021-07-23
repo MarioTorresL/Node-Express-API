@@ -7,7 +7,7 @@ module.exports = (sequelize, DataTypes) =>{
 
     static associations(models){
       //associations here
-      Movie.hasOne(Hero)
+      Movies.hasOne(Heroes)
     }
   };
 
