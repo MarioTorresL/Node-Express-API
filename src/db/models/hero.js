@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Heroes.associate = (models)=>{
-    Heroes.belongsTo( models.Movies, {foreignKey: 'MovieId', as: 'Movies'} )
+    Heroes.belongsTo( models.Movies, {foreignKey: 'MovieId'} )
     Heroes.belongsTo( models.Companies, {foreignKey: 'CompanyId'})
   }
   return Heroes;
