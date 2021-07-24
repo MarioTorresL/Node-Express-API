@@ -1,25 +1,14 @@
-const { Model } = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => {
 
-  class Companies extends Model {
-    /**c
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate(models) {
-      // define association here
-      Companies.hasOne(models.Heroes)
+  const Companies = sequelize.define('Companies',{
+    name:{
+      type: DataTypes.STRING,
+      allowNull: false
     }
-
-  };
-
-  Companies.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Companies',
   });
+
+  Companies.associate = (models)=>{
+    Companies.hasOne(models.Heroes)
+  }
   return Companies;
 };

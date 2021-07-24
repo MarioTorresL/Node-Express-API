@@ -1,24 +1,23 @@
-'use strict'
-const { Model } = require('sequelize');
 
 module.exports = (sequelize, DataTypes) =>{
 
-  class Movies extends Model{
-
-    static associations(models){
-      //associations here
-      Movies.hasOne(Heroes)
+  const Movies = sequelize.define('Movies',{
+    name:{
+      type: DataTypes.STRING,
+      allowNUll: false
+    },
+    actor:{
+      type: DataTypes.STRING,
+      allowNUll: false
+    },
+    date:{
+      type: DataTypes.DATE,
+      allowNUll: false
     }
-  };
+  })
 
-  Movies.init({
-    name:DataTypes.STRING,
-    actor:DataTypes.STRING,
-    date: DataTypes.DATE
-  },{
-   sequelize,
-   modelName:'Movies', 
-  });
-
+  Movies.associate = (models)=>{
+    Movies.hasMany(models.Heroes)
+  }
   return Movies;
 };

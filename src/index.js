@@ -14,4 +14,5 @@ app.use(helmet());//tema de seguridad
 
 app.use('/companies', require('./controllers/companies'));
 app.use('/movies', require('./controllers/movies'));
+app.use('/heroes', require('./controllers/heroes'));
 module.exports= server;

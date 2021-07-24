@@ -1,29 +1,15 @@
-'use stric';
-const { Model } = require('sequelize');
-
 module.exports = (sequelize, DataTypes) => {
 
-  class Heroes extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associations(models) {
-      //associations here
-      Heroes.belongsTo( Companies, { as: 'CompanyId' } )
-      Heroes.belongsTo( Movies, { as: 'MovieId' } )
-
+  const Heroes = sequelize.define('Heroes',{
+    name:{
+      type: DataTypes.STRING,
+      allowNull: false
     }
-
-  };
-
-  Heroes.init({
-    name: DataTypes.STRING
-  }, {
-    sequelize,
-    modelName: 'Heroes'
   });
 
+  Heroes.associate = (models)=>{
+    Heroes.belongsTo( models.Movies, {foreignKey: 'MovieId', as: 'Movies'} )
+    Heroes.belongsTo( models.Companies, {foreignKey: 'CompanyId'})
+  }
   return Heroes;
 };
