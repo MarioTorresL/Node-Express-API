@@ -42,6 +42,12 @@ router.post('/', async(req, res)=>{
       return res.status(400).send('name is required')
     }
 
+    const oldCompany = await models.Companies.findOne({name});
+
+    if(oldCompany){
+      return res.status(409).send('Company already exist')
+    }
+    
     const company = await models.Companies.create({name:name});
 
     res.json(company.toJSON())

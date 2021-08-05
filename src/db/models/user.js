@@ -1,22 +1,29 @@
 module.exports = (sequelize, DataTypes) =>{
 
-  const Movies = sequelize.define('Movies',{
-    name:{
+  const Users = sequelize.define('Users',{
+    firstName:{
       type: DataTypes.STRING,
       allowNUll: false
     },
-    actor:{
+    lastName:{
       type: DataTypes.STRING,
       allowNUll: false
     },
-    date:{
+    email:{
+      type: DataTypes.STRING,
+      allowNUll: false
+    },
+    password:{
+      type: DataTypes.DATE,
+      allowNUll: false
+    },
+    token:{
       type: DataTypes.DATE,
       allowNUll: false
     }
+  },{
+    paranoid: true,
+    timestamps: true,
   })
-
-  Movies.associate = (models)=>{
-    Movies.hasMany(models.Heroes)
-  }
-  return Movies;
+  return Users;
 };
