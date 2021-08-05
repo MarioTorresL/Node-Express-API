@@ -14,10 +14,13 @@ router.get('/', async(req, res)=>{
 
 router.get('/:id', async(req, res)=>{
   try{
-    console.log('req params', req.params.id)
+
     const hero = await models.Heroes.findOne({
       where:{id:req.params.id},
-      include:[{model:models.Companies}, {model:models.Movies}]
+      include:[
+        {model:models.Companies}, 
+        {model:models.Movies}
+      ]
     });
 
     if(hero){
