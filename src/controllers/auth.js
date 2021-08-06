@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const models = require('../db/models/');
+const config = require('../config.json')
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -13,7 +14,9 @@ router.post('/register', async(req,res)=>{
       res.status(400).send("All input is required");
     }
 
-    const oldUser = await models.Users.findOne({email});
+    const oldUser = await models.Users.findOne({
+      where:{email}
+    });
 
     if(oldUser){
       return res.status(409).send('User already exist, please login')
@@ -23,7 +26,7 @@ router.post('/register', async(req,res)=>{
     encryptedPassword = await bcrypt.hash(password, 10);
 
     //create user
-    const user = await User.create({
+    const user = await models.Users.create({
       first_name,
       last_name,
       email: email.toLowerCase(),
@@ -33,7 +36,7 @@ router.post('/register', async(req,res)=>{
     //create token
     const token = jwt.sign(
       {user_id: user.id, email},
-      process.env.TOKEN_KEY,
+      config.TOKEN_KEY,
       {
         expiresIn:"2h"
       }
@@ -50,5 +53,42 @@ router.post('/register', async(req,res)=>{
     res.status(400).send(e)
   }
 });
+
+router.post('/login', async(req,res)=>{
+  try{
+    //input user
+    const {email, password} = req.body;
+
+    //validate
+    if(!(email && password)){
+      req.status(400).send('All input is required')
+    }
+
+    //verify if exist
+    const user = await models.Users.findOne({
+      where:{email}
+    })
+
+    if(user && (await bcrypt.compare(password, user.password))){
+      //create token
+      const token = jwt.sign(
+        {user_id:user.id, email},
+        config.TOKEN_KEY,
+        {
+          expiresIn:"2h"
+        }
+      )
+
+      //save token
+      user.token = token;
+  
+      res.status(200).json(user)
+    }
+    res.status(400).send('Invalid Credentials')
+
+  }catch(e){
+    console.log(e)
+  }
+})
 
 module.exports = router;

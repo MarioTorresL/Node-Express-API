@@ -35,12 +35,12 @@ router.get('/:id', async(req, res)=>{
 
 router.post('/', async(req, res)=>{
   try{
-    console.log('entraaaaaaaaaa')
-    if(Object.entries(req.body).length === 0){
-      return res.status(400).send('No data given');
-    }
 
     const {name, CompanyId, MovieId} = req.body;
+
+    if (!(name && CompanyId && MovieId)) {
+      res.status(400).send("All input is required");
+    }
 
     const company = await models.Companies.findByPk(CompanyId);
     if(company == null){
@@ -53,9 +53,9 @@ router.post('/', async(req, res)=>{
     }
 
     const hero = await models.Heroes.create({
-      name: name,
-      CompanyId: CompanyId,
-      MovieId: MovieId
+      name,
+      CompanyId,
+      MovieId
     });
 
     res.json(hero.toJSON());
@@ -68,10 +68,6 @@ router.post('/', async(req, res)=>{
 router.put('/:id', async(req,res)=>{
   try{
 
-    if(Object.entries(req.body).length === 0){
-      return res.status(400).send('No data given');
-    }
-
     const {name} = req.body
     if(!name){
       return res.status(400).send('name is required');
@@ -82,7 +78,7 @@ router.put('/:id', async(req,res)=>{
       return res.status(404).send('Hero Not Found')
     }
 
-    const updateHero = await hero.update({name:name})
+    const updateHero = await hero.update({name})
 
     res.json(updateHero.toJSON());
 

@@ -8,11 +8,11 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true
       },
-      firstName: {
+      first_name: {
         type: Sequelize.STRING,
         allowNull: false
       },
-      lastName: {
+      last_name: {
         type: Sequelize.STRING,
         allowNull: false
       },
@@ -21,12 +21,11 @@ module.exports = {
         allowNull: false
       },
       password:{
-        type: DataTypes.DATE,
+        type: Sequelize.STRING,
         allowNUll: false
       },
       token:{
-        type: DataTypes.DATE,
-        allowNUll: false
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

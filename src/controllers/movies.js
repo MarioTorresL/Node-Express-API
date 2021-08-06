@@ -32,20 +32,16 @@ router.get('/:id', async (req,res)=>{
 router.post('/', async(req, res)=>{
   try{
 
-    if( Object.entries(req.body).length === 0 ){
-      return res.status(400).send('No data given')
-    }
-
     const {actor, name, date} = req.body;
 
-    if(!actor || !name || !date){
-      return res.status(400).send('actor, name and date is required');
+    if(!(actor && name && date)){
+      return res.status(400).send('All input is required');
     }
 
     const movie = await models.Movies.create({
-      actor: actor,
-      name: name,
-      date: date
+      actor,
+      name,
+      date
     })
 
     res.json(movie.toJSON())
@@ -70,9 +66,9 @@ router.put('/:id', async(req, res)=>{
     }
 
     const updateMovie = await movie.update({
-      actor: actor,
-      name: name,
-      date:date
+      actor,
+      name,
+      date
     })
 
     res.json(updateMovie.toJSON())
