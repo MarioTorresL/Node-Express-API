@@ -1,7 +1,10 @@
 module.exports = (sequelize, DataTypes) =>{
 
   const Publications = sequelize.define('Publications',{
-
+    title:{
+      type: DataTypes.STRING,
+      allowNull: false
+    }
   });
 
   Publications.associate = (models)=>{

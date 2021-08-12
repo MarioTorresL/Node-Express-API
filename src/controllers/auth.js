@@ -61,7 +61,7 @@ router.post('/login', async(req,res)=>{
 
     //validate
     if(!(email && password)){
-      req.status(400).send('All input is required')
+      res.status(400).send('All input is required')
     }
 
     //verify if exist

@@ -24,6 +24,10 @@ module.exports = (sequelize, DataTypes) =>{
   },{
     paranoid: true,
     timestamps: true,
-  })
+  });
+
+  Users.associate = (models)=>{
+    Users.hasOne(models.Publications)
+  }
   return Users;
 };

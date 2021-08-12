@@ -13,8 +13,9 @@ app.use(bodyParser.json());
 app.use(helmet());//tema de seguridad
 app.use('/auth', require('./controllers/auth'));
 
-app.use(require('./middleware/auth'))
+// app.use(require('./middleware/auth'))
 app.use('/companies', require('./controllers/companies'));
 app.use('/movies', require('./controllers/movies'));
 app.use('/heroes', require('./controllers/heroes'));
+app.use('/publications', require('./controllers/publications'));
 module.exports= server;

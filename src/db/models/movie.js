@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) =>{
       type: DataTypes.DATE,
       allowNUll: false
     }
+  },{
+    paranoid: true,
+    timestamps: true,
   })
 
   Movies.associate = (models)=>{

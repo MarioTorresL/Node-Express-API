@@ -5,6 +5,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false
     }
+  },{
+    paranoid: true,
+    timestamps: true,
   });
 
   Companies.associate = (models)=>{
