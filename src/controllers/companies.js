@@ -3,7 +3,7 @@ const models = require('../db/models/');
 
 router.get('/', async(req, res)=>{
   try{
-
+    // get all companies
     const companies = await models.Companies.findAll();
 
     res.status(200).send(companies)
@@ -15,9 +15,10 @@ router.get('/', async(req, res)=>{
 
 router.get('/:id', async (req, res)=>{
   try{
-
+    // get company by id
     const company = await models.Companies.findByPk(req.params.id);
 
+    //validate if exist
     if(company){
       res.status( 200 ).send( company.toJSON() );
     }else{
@@ -30,19 +31,23 @@ router.get('/:id', async (req, res)=>{
 })
 
 router.post('/', async(req, res)=>{
-  try{  
+  try{
+    //get params  
     const {name} = req.body
 
+    //validate params
     if(!name){
       return res.status(400).send('name is required')
     }
 
     const oldCompany = await models.Companies.findOne({name});
-
+    
+    //verificate if exist
     if(oldCompany){
       return res.status(409).send('Company already exist')
     }
     
+    //create company
     const company = await models.Companies.create({name});
 
     res.json(company.toJSON())
@@ -54,18 +59,22 @@ router.post('/', async(req, res)=>{
 
 router.put ('/:id', async (req, res) =>{
   try{
+    //get params
     const {name} = req.body
 
+    //validate params
     if(!name){
       return res.status(400).send('name is required')
     }
 
     const company = await models.Companies.findByPk(req.params.id);
 
+    //validate if exist
     if(!company){
       return res.status(404).send('Not Found')
     }
 
+    //update company
     const updateCompany = await company.update({name});
 
     res.json(updateCompany.toJSON())
@@ -79,15 +88,15 @@ router.delete('/:id', async (req, res)=>{
   try{
 
     const company = await models.Companies.findByPk(req.params.id)
-
+    
+    //validate if exist
     if(!company){
       return res.status(404).send('Not Found')
     }
-
+    //delete company
     await company.destroy();
 
     return res.status(204).json()
-
   }
   catch(e){
     res.status(400).send(e)
