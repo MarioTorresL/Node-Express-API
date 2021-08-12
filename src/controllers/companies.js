@@ -7,7 +7,6 @@ router.get('/', async(req, res)=>{
     const companies = await models.Companies.findAll();
 
     res.status(200).send(companies)
-
   }catch(e){
     res.status(400).send(e)
   }
@@ -18,7 +17,7 @@ router.get('/:id', async (req, res)=>{
     // get company by id
     const company = await models.Companies.findByPk(req.params.id);
 
-    //validate if exist
+    //validate if company exist
     if(company){
       res.status( 200 ).send( company.toJSON() );
     }else{
@@ -42,7 +41,7 @@ router.post('/', async(req, res)=>{
 
     const oldCompany = await models.Companies.findOne({name});
     
-    //verificate if exist
+    //validate if company exist
     if(oldCompany){
       return res.status(409).send('Company already exist')
     }
@@ -69,7 +68,7 @@ router.put ('/:id', async (req, res) =>{
 
     const company = await models.Companies.findByPk(req.params.id);
 
-    //validate if exist
+    //validate if company exist
     if(!company){
       return res.status(404).send('Not Found')
     }
@@ -89,7 +88,7 @@ router.delete('/:id', async (req, res)=>{
 
     const company = await models.Companies.findByPk(req.params.id)
     
-    //validate if exist
+    //validate if copmpany exist
     if(!company){
       return res.status(404).send('Not Found')
     }

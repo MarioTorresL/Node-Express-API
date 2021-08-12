@@ -3,7 +3,7 @@ const models = require('../db/models/');
 
 router.get('/', async (req, res)=>{
   try{
-
+    //get all movies
     const movies = await models.Movies.findAll();
 
     res.status(200).send(movies)
@@ -18,6 +18,7 @@ router.get('/:id', async (req,res)=>{
 
     const movie = await models.Movies.findByPk(req.params.id);
 
+    //validate if movie exist
     if(movie){
       res.status(200).send(movie.toJSON());
     }else{
@@ -31,13 +32,22 @@ router.get('/:id', async (req,res)=>{
 
 router.post('/', async(req, res)=>{
   try{
-
+    //get params
     const {actor, name, date} = req.body;
 
+    //valdiate params
     if(!(actor && name && date)){
       return res.status(400).send('All input is required');
     }
 
+    const oldMovie = await models.Movies.findOne({name})
+
+    //validate if movie exist
+    if(oldMovie){
+      return res.status(409).send('Movie already exist')
+    }
+
+    //create movie
     const movie = await models.Movies.create({
       actor,
       name,
@@ -53,18 +63,21 @@ router.post('/', async(req, res)=>{
 router.put('/:id', async(req, res)=>{
   try{
 
-    if(Object.entries(req.body). length === 0){
-      return res.status(400).send('No data given')
-    }
-
     const {actor, name, date} = req.body;
+
+    //valdiate params
+    if(!(actor && name && date)){
+      return res.status(400).send("All input is required")
+    }
 
     const movie = await models.Movies.findByPk(req.params.id);
 
+    //validate if movie exist
     if(!movie){
       return res.status(404).send('Not Found')
     }
 
+    //update movie
     const updateMovie = await movie.update({
       actor,
       name,
@@ -79,13 +92,15 @@ router.put('/:id', async(req, res)=>{
 
 router.delete('/:id', async(req, res)=>{
   try{
-
+    
     const movie = await models.Movies.findByPk(req.params.id);
 
+    //validate if movie exist
     if(!movie){
       return res.status(404).send('Not Found');
     }
 
+    //delete movie
     await movie.destroy();
 
     return res.status(204).json()
