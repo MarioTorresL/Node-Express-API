@@ -4,18 +4,18 @@ const config = require('../config.json');
 const verifyToken = (req, res, next)=>{
 
   if( !req.headers['authorization'] ){
-    return res.status(401).error(new InvalidAccessToken('Authorization header not present'))
+    return res.status(401).send('Authorization header not present');
   }
 
   const authorizationHeader = req.headers['authorization'];
   const [type, accessToken] = authorizationHeader.split(' ');
 
   if( type !== 'Bearer' ){
-    return res.status(401).error(new InvalidAccessToken('Wrong Authorization header type given'))
+    return res.status(401).send('Wrong Authorization header type given');
   }
 
   if( !accessToken ){
-    return res.status(401).error(new InvalidAccessToken('Access token not present'))
+    return res.status(401).send('Access token not present')
   }
 
   try{
