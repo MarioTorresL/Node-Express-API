@@ -2,14 +2,24 @@ const jwt = require('jsonwebtoken');
 const config = require('../config.json');
 
 const verifyToken = (req, res, next)=>{
-  const token= req.body.token || req.query.token || req.headers["x-access-token"];
 
-  if(!token){
-    return res.status(403).send("A token is require for authentication");
+  if( !req.headers['authorization'] ){
+    return res.status(401).error(new InvalidAccessToken('Authorization header not present'))
+  }
+
+  const authorizationHeader = req.headers['authorization'];
+  const [type, accessToken] = authorizationHeader.split(' ');
+
+  if( type !== 'Bearer' ){
+    return res.status(401).error(new InvalidAccessToken('Wrong Authorization header type given'))
+  }
+
+  if( !accessToken ){
+    return res.status(401).error(new InvalidAccessToken('Access token not present'))
   }
 
   try{
-    const decoded = jwt.verify(token, config.TOKEN_KEY);
+    const decoded = jwt.verify(accessToken, config.TOKEN_KEY);
     req.user = jwt.decoded;
   }catch(e){
     return res.status(401).send('InvalidToken')
